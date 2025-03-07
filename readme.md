@@ -27,5 +27,5 @@ but the number of states and their names in the sates file must be the same in t
 
 
 When you have created your files, write the path to these files in this coding line:  
-agent = SellerAgent(r"your PATH TO FILE", r"your PATH TO FILE")  
+agent = SellerAgent(r **"your PATH TO FILE"**, r **"your PATH TO FILE"**)  
 agent.load_data()
