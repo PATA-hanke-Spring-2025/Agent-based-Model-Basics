@@ -23,4 +23,7 @@ File for matrix (headers names and values can be different)
 | MAINTAINING | 0	        | 0		     | 0         | 0           | 0.3     | 	0.7        |
 
 
-but the number of states and their names in the sates file must be the same in the matrix file. 
+but the number of states and their names in the sates file must be the same in the matrix file.
+When you create your files, write the path to these files in this coding line: 
+agent = SellerAgent(r"your PATH TO FILE", r"your PATH TO FILE")
+agent.load_data()
