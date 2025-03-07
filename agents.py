@@ -1,74 +1,52 @@
-from mesa import Agent
-import random 
+import pandas as pd
 
-class Buyer(Agent):
-    """
-    A Buyer Agent
+class SellerAgent:
+    def __init__(self, states_file: str, matrix_file: str):
+        """Initialize the SellerAgent with two Excel files"""
+        self.states_file = states_file
+        self.matrix_file = matrix_file
+        self.states = {}  # Stores ID to State mappings
+        self.transition_matrix = {}  # Stores transition probabilities
+
+
+    def load_data(self):        #Load the Excel files and process them as CSV-like structures
     
-    Attributes:
-        "Not Interested", "Evaluating", "Budgeting", "Deciding", "Go Nogo", "Delivered", "Satisfied"
-    """
-    def __init__(self, id, model):
-        """
-        Create a new buyer
+        try:
+            # Load States mapping (States file),Clean spaces from header and body
+            states_df = pd.read_excel(self.states_file)
+            states_df.columns = states_df.columns.str.strip()  # Clean spaces from header
+            states_df = states_df.map(lambda x: x.strip() if isinstance(x, str) else x)  # Clean spaces in body
 
-        Arguments:
-            id: integer identifier.
-            model: reference to containing model.
-        """
-        super().__init__(id, model)
-        self.state = "Not Interested"
-    
-    def step(self):
-        """
-        Simulate the process
-        """
+            # Skip the first row (headers) and use them correctly to map ID to State
+            self.states = dict(zip(states_df.iloc[:, 0], states_df.iloc[:, 1]))  # First column is ID, second is State
 
-        chance = random.random()
+            # Load Transition matrix (Matrix file)
+            matrix_df = pd.read_excel(self.matrix_file)
+            matrix_df.columns = matrix_df.columns.str.strip()  # Clean spaces from header
+            matrix_df = matrix_df.map(lambda x: x.strip() if isinstance(x, str) else x)  # Clean spaces in body
 
-        if self.state == "Not Interested":
-            if chance < 0.3:
-                self.state = "Evaluating"
+            # Extract transition matrix
+            header = matrix_df.columns[1:].tolist()  # State names from column headers
+            for index, row in matrix_df.iterrows():
+                from_state = row.iloc[0]  # First column is the 'From' state
+                probabilities = row[1:].astype(float).tolist()  # Convert to float
+                self.transition_matrix[from_state] = dict(zip(header, probabilities))
 
-        elif self.state == "Evaluating":
-            if chance < 0.4:
-                self.state = "Budgeting"
-            elif chance < 0.7:
-                self.state = "Not Interested"
+        except Exception as e:
+            print(f"Error loading data: {e}")
 
-        elif self.state == "Budgeting":
-            if chance < 0.2:
-                self.state == "Not Interested"
-            elif chance < 0.4:
-                self.state == "Evaluating"
-            elif chance < 0.7:
-                self.state = "Deciding"
+    def display_data(self):
+        """Print the loaded data for debugging."""
+        print("States:")
+        for agent_id, state in self.states.items():
+            print(f"  {agent_id}: {state}")
 
-        elif self.state == "Deciding":
-            if chance < 0.1:
-                self.state == "Not Interested"
-            elif chance < 0.3:
-                self.state == "Evaluating"
-            elif chance < 0.4:
-                self.state == "Budgeting"
-            elif chance < 0.7:
-                self.state == "Go Nogo"
-        
-        elif self.state == "Go Nogo":
-            if chance < 0.1:
-                self.state = "Deciding"
-            if chance < 0.8:
-                self.state = "Delivered"
-            
-        elif self.state == "Delivered":
-            if chance < 0.8:
-                self.state = "Satisfied"
-            else: self.state = "Dissatsified"
-        
-        elif self.state == "Satisfied":
-            if chance < 0.1:
-                self.state = "Dissatisfied"
-        
-        elif self.state == "Dissatisfied":
-            if chance < 0.1:
-                self.state = "Satisfied"
+        print("\nTransition Matrix:")
+        for from_state, transitions in self.transition_matrix.items():
+            print(f"  {from_state}: {transitions}")
+
+# Example usage:
+if __name__ == "__main__":
+    agent = SellerAgent(r"your PATH TO FILE", r"your PATH TO FILE")
+    agent.load_data()
+    agent.display_data()
