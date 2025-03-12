@@ -71,7 +71,7 @@ class SellerAgent:
 
 # Example usage:
 if __name__ == "__main__":
-    agent = SellerAgent(r"C:\Users\tasha\HH\PATA\Seller_States.xlsx", r"C:\Users\tasha\HH\PATA\Seller_Matrix .xlsx")
+    agent = SellerAgent(r"C:\Users\tasha\HH\PATA\Agent-based-Model-Basics\Seller_States.xlsx", r"C:\Users\tasha\HH\PATA\Agent-based-Model-Basics\Seller_Matrix.xlsx")
     agent.load_data()
     np.random.seed(42)
     agent.display_data() 
