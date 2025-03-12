@@ -2,8 +2,10 @@ import pandas as pd
 from agents import Buyer
 from model import Model
 
-transition_data = pd.read_csv("BuyerTransition.csv", delimiter=";")
-states = pd.read_csv("BuyerStates.csv", delimiter=";")
+transition_data = pd.read_csv("SellerTransition.csv", delimiter=";")
+states = pd.read_csv("SellerStates.csv", delimiter=";")
+
+last_id = states['State'].iloc[-1]
 
 buyer = Buyer(transition_data, states)
 model = Model(buyer)
@@ -11,7 +13,7 @@ model = Model(buyer)
 step_count = 0
 state_history = []
 
-while buyer.state not in ["Satisfied", "Dissatisfied"]:
+while buyer.state != last_id:
     print(f"Current state: {buyer.state}")
     state_history.append(buyer.state)
     model.step()

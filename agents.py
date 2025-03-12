@@ -7,9 +7,9 @@ class Buyer:
         "Not Interested", "Evaluating", "Budgeting", "Deciding", "Go Nogo", "Delivered", "Satisfied"
     """
     def __init__(self, transition_data, states):
-        self.state = "Not Interested"
         self.transition_data = transition_data
         self.states = states
+        self.state = states['State'].iloc[0]
         self.transition_matrix = self.create_initial_matrix()
 
     def create_initial_matrix(self):
