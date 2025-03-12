@@ -1,0 +1,7 @@
+{
+    "seller": {
+        "PROSPECTING": {"PROSPECTING": 0.6, "QUALIFYING": 0.4},
+        "QUALIFYING": {"QUALIFYING": 0.6, "PROPOSING": 0.4},
+        "PROPOSING": {"PROPOSING": 0.3, "NEGOTIATING": 0.4, "CLOSING": 0.2, "QUALIFYING": 0.1}
+    }
+}

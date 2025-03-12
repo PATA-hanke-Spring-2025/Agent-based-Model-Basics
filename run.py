@@ -12,21 +12,31 @@ for current_state, transitions in state_transitions.items():
 
 df = pd.DataFrame(data)
 
-
-buyer = Buyer(df)
-
-print("Initial state:", buyer.state)
 print("Transition phase:")
 print(df)
 
-step_count = 1
+sim_count = 0
+total_steps = 0
 
-while step_count < 101:  # limited to 100 steps
-    current_probabilities = df[df["current_state"] == buyer.state]["probability"]
-    if current_probabilities.sum() == 0:
-        print("Invalid transition.")
-        break
+while sim_count < 100:  # limited to 100 sims
+    buyer = Buyer(df) # reset for each sim
+    step_count = 1  # reset for each sim
+
+    #print("Initial state:", buyer.state) = currently NOT_INTERESTED
     
-    print(f"Step {step_count}: {buyer.state}")
-    buyer.step()
-    step_count += 1
+    while True:
+        current_probabilities = df[df["current_state"] == buyer.state]["probability"]
+        if current_probabilities.sum() == 0:
+            print("Invalid transition.")
+            break
+        
+        buyer.step()
+        step_count += 1
+        if buyer.state in ["SATISFIED", "DISSATISFIED"]:
+            print(f"Final step {step_count}: {buyer.state}")           
+            break
+    total_steps += step_count
+    sim_count += 1
+
+average_steps = total_steps / sim_count
+print(f"Average steps in {sim_count} sims: {average_steps}")
