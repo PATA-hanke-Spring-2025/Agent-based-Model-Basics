@@ -27,3 +27,5 @@ class Buyer:
         probabilities = self.transition_matrix.loc[self.state].values
         self.state = random.choices(self.states['State'].tolist(), weights=probabilities)[0]
         return self.state
+    
+random.seed(42)

@@ -2,7 +2,7 @@ import pandas as pd
 from agents import Buyer
 from model import Model
 
-transition_data = pd.read_csv("SellerTransition.csv", delimiter=";")
+transition_data = pd.read_csv("BuyerTransition.csv", delimiter=";")
 states = pd.read_csv("BuyerStates.csv", delimiter=";")
 
 buyer = Buyer(transition_data, states)
