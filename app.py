@@ -14,7 +14,6 @@ step_count = 0
 state_history = []
 
 while buyer.state != last_id:
-    print(f"Current state: {buyer.state}")
     state_history.append(buyer.state)
     model.step()
     step_count += 1
