@@ -2,10 +2,7 @@ import pandas as pd
 import random
 
 class Buyer:
-    """
-    Attributes:
-        "Not Interested", "Evaluating", "Budgeting", "Deciding", "Go Nogo", "Delivered", "Satisfied"
-    """
+
     def __init__(self, transition_data, states):
         self.transition_data = transition_data
         self.states = states
