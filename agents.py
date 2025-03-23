@@ -1,74 +1,27 @@
-from mesa import Agent
-import random 
+import pandas as pd
+import random
 
-class Buyer(Agent):
-    """
-    A Buyer Agent
-    
-    Attributes:
-        "Not Interested", "Evaluating", "Budgeting", "Deciding", "Go Nogo", "Delivered", "Satisfied"
-    """
-    def __init__(self, id, model):
-        """
-        Create a new buyer
+class Agent:
 
-        Arguments:
-            id: integer identifier.
-            model: reference to containing model.
-        """
-        super().__init__(id, model)
-        self.state = "Not Interested"
-    
+    def __init__(self, transition_data, states):
+        self.transition_data = transition_data
+        self.states = states
+        self.state = states['State'].iloc[0]
+        self.transition_matrix = self.create_initial_matrix()
+
+    def create_initial_matrix(self):
+        matrix = []
+        for from_state in self.states['State']:
+            row = []
+            for to_state in self.states['State']:
+                value = self.transition_data.loc[self.transition_data['From/To'] == from_state, to_state].values[0]
+                row.append(value)
+            matrix.append(row)
+        return pd.DataFrame(matrix, index=self.states['State'], columns=self.states['State'])
+
     def step(self):
-        """
-        Simulate the process
-        """
-
-        chance = random.random()
-
-        if self.state == "Not Interested":
-            if chance < 0.3:
-                self.state = "Evaluating"
-
-        elif self.state == "Evaluating":
-            if chance < 0.4:
-                self.state = "Budgeting"
-            elif chance < 0.7:
-                self.state = "Not Interested"
-
-        elif self.state == "Budgeting":
-            if chance < 0.2:
-                self.state == "Not Interested"
-            elif chance < 0.4:
-                self.state == "Evaluating"
-            elif chance < 0.7:
-                self.state = "Deciding"
-
-        elif self.state == "Deciding":
-            if chance < 0.1:
-                self.state == "Not Interested"
-            elif chance < 0.3:
-                self.state == "Evaluating"
-            elif chance < 0.4:
-                self.state == "Budgeting"
-            elif chance < 0.7:
-                self.state == "Go Nogo"
-        
-        elif self.state == "Go Nogo":
-            if chance < 0.1:
-                self.state = "Deciding"
-            if chance < 0.8:
-                self.state = "Delivered"
-            
-        elif self.state == "Delivered":
-            if chance < 0.8:
-                self.state = "Satisfied"
-            else: self.state = "Dissatsified"
-        
-        elif self.state == "Satisfied":
-            if chance < 0.1:
-                self.state = "Dissatisfied"
-        
-        elif self.state == "Dissatisfied":
-            if chance < 0.1:
-                self.state = "Satisfied"
+        probabilities = self.transition_matrix.loc[self.state].values
+        self.state = random.choices(self.states['State'].tolist(), weights=probabilities)[0]
+        return self.state
+    
+random.seed(42)
