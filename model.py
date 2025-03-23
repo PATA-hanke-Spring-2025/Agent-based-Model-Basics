@@ -1,6 +1,6 @@
 class Model:
-    def __init__ (self, buyer) :
-        self.buyer = buyer
+    def __init__ (self, agent) :
+        self.agent = agent
 
     def step(self):
-        self.buyer.step()
+        self.agent.step()

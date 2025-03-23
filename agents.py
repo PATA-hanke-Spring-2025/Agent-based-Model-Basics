@@ -1,7 +1,7 @@
 import pandas as pd
 import random
 
-class Buyer:
+class Agent:
 
     def __init__(self, transition_data, states):
         self.transition_data = transition_data
@@ -15,7 +15,6 @@ class Buyer:
             row = []
             for to_state in self.states['State']:
                 value = self.transition_data.loc[self.transition_data['From/To'] == from_state, to_state].values[0]
-                value = float(value.replace(',', '.'))
                 row.append(value)
             matrix.append(row)
         return pd.DataFrame(matrix, index=self.states['State'], columns=self.states['State'])
