@@ -1,0 +1,9 @@
+From/To;Not Interested;Evaluating;Budgeting;Deciding;Go Nogo;Delivered;Satisfied;Dissatisfied
+Not Interested;0,7;0,3;0,0;0,0;0,0;0,0;0,0;0,0
+Evaluating;0,3;0,3;0,4;0,0;0,0;0,0;0,0;0,0
+Budgeting;0,2;0,2;0,3;0,3;0,0;0,0;0,0;0,0
+Deciding;0,1;0,2;0,1;0,3;0,3;0,0;0,0;0,0
+Go Nogo;0,0;0,0;0,0;0,1;0,2;0,7;0,0;0,0
+Delivered;0,0;0,0;0,0;0,0;0,0;0,0;0,8;0,2
+Satisfied;0,0;0,0;0,0;0,0;0,0;0,0;0,9;0,1
+Dissatisfied;0,0;0,0;0,0;0,0;0,0;0,0;0,1;0,9
