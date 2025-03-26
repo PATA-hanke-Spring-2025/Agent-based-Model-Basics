@@ -36,26 +36,25 @@ model = Model(agent)
 
 step_count = 0
 state_history = []
-state_times = []
 next_state = []
 next_step = []
 
 while agent.state != last_id:
     state_history.append(agent.state)
     model.step()
-    state_times.append(datetime.datetime.now().replace(microsecond=0))
     next_state.append(agent.state)
     step_count += 1
     next_step.append(step_count+1)
 
 results_df = pd.DataFrame({
-    "Timestamp": state_times,
     "Current State": state_history,
     "Current Step Number": range(1, len(state_history) + 1),
     "Next State": next_state,
     "Next Step Number": next_step
 })
 
-results_df.to_csv("simulation_results.csv", index=False)
+timestamp_str = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+filename = f"simulation_results_{timestamp_str}.csv"
+results_df.to_csv(filename, index=False)
 
 print(f"Simulation results saved to simulation_results.csv. Total steps: {step_count}")
