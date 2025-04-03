@@ -47,18 +47,3 @@ def read_plugins(agent):
             else:
                 print("No plugins loaded")
     return plugins, plugin_data, loaded_plugins
-
-
-def create_plugin_matrix(agent, plugins):
-    if plugins is None:
-        return None;
-    print("Plugins Columns:", plugins.columns)
-    matrix = []
-    for from_plugin in plugins['Name']:
-        row = []
-        for to_plugin in plugins['Name']:
-            print("To Plugin:", to_plugin)
-            value = plugins.loc[plugins['Name'] == from_plugin, to_plugin].values[0]
-            row.append(value)
-        matrix.append(row)
-    return pd.DataFrame(matrix, index=plugins['Name'], columns=plugins['Name'])
