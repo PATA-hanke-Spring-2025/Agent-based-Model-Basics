@@ -1,6 +1,6 @@
 import pandas as pd
 from agents import Agent
-from model import Model
+from model import B2BValueElementsModel  # Import the correct model class
 from reading import read_excel
 import os
 import datetime
@@ -22,32 +22,26 @@ if __name__ == "__main__":
     transition_data = read_excel(transition_file)
     states = read_excel(states_file)
 
-last_id = states['State'].iloc[-1]
+    # Initialize the B2BValueElementsModel
+    model = B2BValueElementsModel(
+        num_buyers=30,  # Example number of buyers
+        num_sellers=10,  # Example number of sellers
+        transitions_file="state_transitions.csv",
+        states=states,  # Pass the states DataFrame
+        transition_data=transition_data  # Pass the transition data
+    )
 
-agent = Agent(transition_data, states)
-model = Model(agent)
+    # Run the model for a fixed number of steps
+    step_count = 50
+    for step in range(step_count):
+        model.step()
 
-step_count = 0
-state_history = []
-next_state = []
-next_step = []
+    # Collect results
+    results_df = model.datacollector.get_model_vars_dataframe()
 
-while agent.state != last_id:
-    state_history.append(agent.state)
-    model.step()
-    next_state.append(agent.state)
-    step_count += 1
-    next_step.append(step_count+1)
+    # Save results to a CSV file
+    timestamp_str = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    filename = f"simulation_results_{timestamp_str}.csv"
+    results_df.to_csv(filename, index=False)
 
-results_df = pd.DataFrame({
-    "Current State": state_history,
-    "Current Step Number": range(1, len(state_history) + 1),
-    "Next State": next_state,
-    "Next Step Number": next_step
-})
-
-timestamp_str = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-filename = f"simulation_results_{timestamp_str}.csv"
-results_df.to_csv(filename, index=False)
-
-print(f"Simulation results saved to simulation_results.csv. Total steps: {step_count}")
+    print(f"Simulation results saved to {filename}. Total steps: {step_count}")

@@ -26,23 +26,24 @@ def create_state_matrix(transition_data, states):
 
 ##For reading the plugins + creating the plugin matrix
 def read_plugins(agent):
+    """Load plugins and their configurations."""
     plugin_status = False
     plugin_file = "Plugins.xlsx"
     plugins = None
     plugin_data = {}
     loaded_plugins = {}
     if os.path.exists(plugin_file):
-        plugins=read_excel(plugin_file)
+        plugins = read_excel(plugin_file)
         if plugins is not None:
-            plugin_status=True 
-            for index, row in plugins.iterrows():   
-                plugin_name=row['Name']
-                plugin_import=row['Import']
-                plugin_function=row['Main Function']
-                plugin_data[plugin_name]={'function': plugin_function, 'import': plugin_import}
+            plugin_status = True
+            for index, row in plugins.iterrows():
+                plugin_name = row['Name']
+                plugin_import = row['Import']
+                plugin_function = row['Main Function']
+                plugin_data[plugin_name] = {'function': plugin_function, 'import': plugin_import}
                 module = importlib.import_module(plugin_import)
-                loaded_plugins[plugin_name]=(module,plugin_function)
-            if plugin_status==True:
+                loaded_plugins[plugin_name] = (module, plugin_function)
+            if plugin_status:
                 print("Plugins loaded")
             else:
                 print("No plugins loaded")

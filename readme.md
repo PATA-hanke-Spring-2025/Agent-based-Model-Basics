@@ -1,10 +1,19 @@
+
+
 To Run:
+
+
 
 
 Install xlrd and openpyxl if you don't have it installed using pip ("pip install xlrd", "pip install openpyxl")
 
+Vi's version:
 
 Run "python app.py"
+
+Joona's version:
+
+Run "python run.py"
 
 
 
