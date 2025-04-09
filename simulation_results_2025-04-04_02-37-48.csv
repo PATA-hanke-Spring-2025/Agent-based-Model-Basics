@@ -1,0 +1,25 @@
+Current State,Current Step Number,Next State,Next Step Number
+Prospecting,1,Qualifying,2
+Qualifying,2,Qualifying,3
+Qualifying,3,Proposing,4
+Proposing,4,Negotiating,5
+Negotiating,5,Proposing,6
+Proposing,6,Proposing,7
+Proposing,7,Negotiating,8
+Negotiating,8,Proposing,9
+Proposing,9,Closing,10
+Closing,10,Prospecting,11
+Prospecting,11,Prospecting,12
+Prospecting,12,Prospecting,13
+Prospecting,13,Qualifying,14
+Qualifying,14,Proposing,15
+Proposing,15,Negotiating,16
+Negotiating,16,Closing,17
+Closing,17,Prospecting,18
+Prospecting,18,Qualifying,19
+Qualifying,19,Proposing,20
+Proposing,20,Negotiating,21
+Negotiating,21,Negotiating,22
+Negotiating,22,Negotiating,23
+Negotiating,23,Closing,24
+Closing,24,Maintaining,25
