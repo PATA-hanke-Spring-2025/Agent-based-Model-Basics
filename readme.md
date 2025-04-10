@@ -1,31 +1,11 @@
-## Your data mast be in two files ##
-File for states:
-
-| ID | State       |
-|----|-------------|
-| 1	 | PROSPECTING |
-| 2	 | QUALIFYING  |
-| 3	 | PROPOSING   |
-| 4	 | NEGOTIATING |
-| 5  | CLOSING     |
-| 6  | MAINTAINING |
+To Run:
 
 
-File for matrix (headers names and values can be different)
-
-| From/To	  | PROSPECTING	| QUALIFYING | PROPOSING | NEGOTIATING | CLOSING | MAINTAINING |
-|-------------|-------------|------------|-----------|-------------|---------|-------------|
-| PROSPECTING | 0.6	        | 0.4	     | 0         | 0           | 0       | 	0          | 
-| QUALIFYING  | 0	        | 0.6	     | 0.4       | 0           | 0       | 	0          |
-| PROPOSING	  | 0	        | 0.1	     | 0.3       | 0.4         | 0.2     | 	0          |
-| NEGOTIATING | 0	        | 0	         | 0.2       | 0.5         | 0.3     | 	0          |
-| CLOSING     | 0	        | 0	         | 0         | 0.1         | 0.2     | 	0.5        |
-| MAINTAINING | 0	        | 0		     | 0         | 0           | 0.3     | 	0.7        |
+Install xlrd and openpyxl if you don't have it installed using pip ("pip install xlrd", "pip install openpyxl")
 
 
-but the number of states and their names in the sates file must be the same in the matrix file.
+Run "python app.py"
 
 
-When you have created your files, write the path to these files in this coding line:  
-agent = SellerAgent(r"**your PATH TO FILE**", r"**your PATH TO FILE**")  
-agent.load_data()
+
+Note - SellerTransition.test is a csv file, I changed the extension to .test to disbale it while checking if .xlsx files worked properly. To use it, just change the .test extension to .csv

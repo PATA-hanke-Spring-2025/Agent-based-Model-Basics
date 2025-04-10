@@ -1,0 +1,7 @@
+From/To;Prospecting;Qualifying;Proposing;Negotiating;Closing;Maintaining
+Prospecting;0,6;0,4;0;0;0;0
+Qualifying;0;0,6;0,4;0;0;0
+Proposing;0;0,1;0,3;0,4;0,2;0
+Negotiating;0;0;0,2;0,5;0,3;0
+Closing;0,2;0;0;0,1;0,2;0,5
+Maintaining;0,2;0;0;0;0,3;0,5
