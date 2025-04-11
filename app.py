@@ -1,21 +1,14 @@
 import pandas as pd
 from agents import Agent
 from model import Model
+from reading import read_excel
 import os
 import datetime
-
-def read_data(filename):
-    if filename.endswith('.csv'):
-        return pd.read_csv(filename, delimiter=";")
-    elif filename.endswith(('.xls')):
-        return pd.read_excel(filename, engine= "xlrd")
-    elif filename.endswith(('.xlsx')):
-        return pd.read_excel(filename, engine='openpyxl')
 
 if __name__ == "__main__":
     transition_file = "SellerTransition.csv"
     states_file = "SellerStates.csv"
-
+    
     if os.path.exists("SellerTransition.xlsx"):
         transition_file = "SellerTransition.xlsx"
     elif os.path.exists("SellerTransition.xls"):
@@ -26,8 +19,8 @@ if __name__ == "__main__":
     elif os.path.exists("SellerStates.xls"):
         states_file = "SellerStates.xls"
 
-    transition_data = read_data(transition_file)
-    states = read_data(states_file)
+    transition_data = read_excel(transition_file)
+    states = read_excel(states_file)
 
 last_id = states['State'].iloc[-1]
 
