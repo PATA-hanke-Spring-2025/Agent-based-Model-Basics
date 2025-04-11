@@ -25,10 +25,8 @@ def create_state_matrix(transition_data, states):
 
 ##For reading value_elements + category_weights
 def read_value_elements(elements_value, category_weights_value):
-     print(f"elements_value: {elements_value}") 
      elements = {}
      for index, row in elements_value.iterrows():
-        print(f"Processing row: {row}")
         element_name=row['element_name']
         elements[element_name] = {
             'weight': float(row['weight']),
@@ -38,6 +36,7 @@ def read_value_elements(elements_value, category_weights_value):
      for index, row in category_weights_value.iterrows():
             category_weights[row['category']
             ]=float(row['weight'])
+         
      return elements, category_weights
             
 
@@ -57,9 +56,20 @@ def read_plugins(agent):
                 plugin_name=row['Name']
                 plugin_import=row['Import']
                 plugin_function=row['Main Function']
-                plugin_data[plugin_name]={'function': plugin_function, 'import': plugin_import}
+                
                 module = importlib.import_module(plugin_import)
+                # Load plugin-specific data if load() exists
+                plugin_loaded_data = {}
+                if hasattr(module, 'load'):
+                    plugin_loaded_data = module.load()
+
+                plugin_data[plugin_name]={
+                    'function': plugin_function,
+                    'import': plugin_import,
+                    'data_for_loading': plugin_loaded_data}
+               
                 loaded_plugins[plugin_name]=(module,plugin_function)
+               
             if plugin_status==True:
                 print("Plugins loaded")
             else:

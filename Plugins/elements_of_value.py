@@ -4,18 +4,16 @@ import importlib
 
 def load():
     elements_df = read_excel("value_elements.csv")
-    print(f"Elements: {elements_df}")
     weights_df = read_excel("category_weights.csv")
-    elements, weights = read_value_elements(elements_df, weights_df)
-
+    elements, weights = read_value_elements(elements_df, weights_df)    
     return {
         "elements": elements,
         "category_weights": weights
     }
-      
+    
+
 def evaluate_offering( offering_scores, elements, category_weights, buyer_preferences=None):
-        """Evaluate a B2B offering based on its element scores and buyer preferences"""
-        print(f"Elements DataFrame:{elements} ")
+        print(f"Elements: {category_weights}")     
         for element, details in elements.items():
             if details['category'] == 'table_stakes':
                 if element in offering_scores and offering_scores[element] < 6:
@@ -62,9 +60,6 @@ def evaluate_offering( offering_scores, elements, category_weights, buyer_prefer
         overall_score = 0
         for cat, score in category_scores.items():
             overall_score += score * category_weights[cat]
-
+        print(f"Overall score: {overall_score}, Category scores: {category_scores}")
         return overall_score, category_scores
 
-plugin_data = load()  # This loads the data
-elements = plugin_data["elements"]
-category_weights = plugin_data["category_weights"]

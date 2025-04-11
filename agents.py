@@ -15,13 +15,19 @@ class Agent:
     def read_plugins_from_file(self):
         self.plugins, self.plugin_data, self.loaded_plugins = read_plugins(self)
 
-    def apply_plugins(self, probabilites):
+    
+    def apply_plugins(self):
+            
         for plugin_name, plugin_info in self.plugin_data.items():
                 module, plugin_function = self.loaded_plugins[plugin_name]
                 function_to_call = getattr(module, plugin_function)
+                # Prepare dynamic arguments
+                plugin_args = plugin_info.get('data_for_loading', {})
                 print(f"➡️  Applying plugin: {plugin_info}")
-                probabilites = function_to_call(probabilites, plugin_info, self.states['State'].tolist(), self.state)
-        return probabilites
+                probabilities = function_to_call(probabilities, plugin_info, self.states['State'].tolist(), self.state)
+                
+        return probabilities
+    
 
     def step(self):
         probabilities = self.transition_matrix.loc[self.state].values
