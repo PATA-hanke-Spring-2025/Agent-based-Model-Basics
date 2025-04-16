@@ -27,27 +27,14 @@ last_id = states['State'].iloc[-1]
 agent = Agent(transition_data, states)
 model = Model(agent)
 
-step_count = 0
-state_history = []
-next_state = []
-next_step = []
+# Define the number of steps for the simulation
+num_steps = 100  # Adjust this value as needed
 
-while agent.state != last_id:
-    state_history.append(agent.state)
+# Run the simulation for the specified number of steps
+for step in range(num_steps):
+    print(f"Step {step + 1}")
     model.step()
-    next_state.append(agent.state)
-    step_count += 1
-    next_step.append(step_count+1)
 
-results_df = pd.DataFrame({
-    "Current State": state_history,
-    "Current Step Number": range(1, len(state_history) + 1),
-    "Next State": next_state,
-    "Next Step Number": next_step
-})
-
-timestamp_str = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-filename = f"simulation_results_{timestamp_str}.csv"
-results_df.to_csv(filename, index=False)
-
-print(f"Simulation results saved to simulation_results.csv. Total steps: {step_count}")
+# Save the results
+model.save_results("simulation_results.csv")
+print(f"Simulation results saved to simulation_results.csv. Total steps: {num_steps}")
