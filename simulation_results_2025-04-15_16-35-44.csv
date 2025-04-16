@@ -1,0 +1,10 @@
+Current State,Current Step Number,Next State,Next Step Number
+Prospecting,1,Prospecting,2
+Prospecting,2,Prospecting,3
+Prospecting,3,Prospecting,4
+Prospecting,4,Prospecting,5
+Prospecting,5,Qualifying,6
+Qualifying,6,Proposing,7
+Proposing,7,Negotiating,8
+Negotiating,8,Closing,9
+Closing,9,Maintaining,10
