@@ -7,7 +7,7 @@ def read_excel(filename):
     if filename.endswith('.csv'):
         return pd.read_csv(filename, delimiter=";")
     elif filename.endswith(('.xls')):
-        return pd.read_excel(filename, engine= "xlrd")
+        return pd.read_excel(filename, engine="xlrd")
     elif filename.endswith(('.xlsx')):
         return pd.read_excel(filename, engine='openpyxl')
 
@@ -23,26 +23,35 @@ def create_state_matrix(transition_data, states):
         matrix.append(row)
     return pd.DataFrame(matrix, index=states['State'], columns=states['State'])
 
+
 ##For reading value_elements + category_weights
-def read_value_elements(elements_value, category_weights_value):
-     elements = {}
-     for index, row in elements_value.iterrows():
-        element_name=row['element_name']
+def read_value_elements(elements_file, weights_file):
+    """Read value elements and category weights from CSV files."""
+    elements_df = pd.read_csv(elements_file, delimiter=";")
+    weights_df = pd.read_csv(weights_file, delimiter=";")
+
+    elements = {}
+    for _, row in elements_df.iterrows():
+        element_name = row['element_name']
+        weight = float(row['weight'])
+        category = row['category']
+        touch_count = int(row['touch_count'])
+        # Store the weight, category, and touch count for each element
         elements[element_name] = {
-            'weight': float(row['weight']),
-            'category': row['category']
-            }
-     category_weights = {}
-     for index, row in category_weights_value.iterrows():
-            category_weights[row['category']
-            ]=float(row['weight'])
-         
-     return elements, category_weights
-            
+            'weight': weight,
+            'category': category,
+            'touch_count': touch_count
+        }
+
+    category_weights = {}
+    for _, row in weights_df.iterrows():
+        category_weights[row['category']] = float(row['weight'])
+
+    return elements, category_weights
 
 
 # ##For reading the plugins + creating the plugin matrix
-def read_plugins(agent):
+"""def read_plugins(agent):
     plugin_status = False
     plugin_file = "Plugins.xlsx"
     plugins = None
@@ -74,4 +83,4 @@ def read_plugins(agent):
                 print("Plugins loaded")
             else:
                 print("No plugins loaded")
-    return plugins, plugin_data, loaded_plugins
+    return plugins, plugin_data, loaded_plugins"""

@@ -1,14 +1,17 @@
 import pandas as pd
 from agents import Agent
 from model import Model
-from reading import read_excel
+from reading import read_excel, read_value_elements
+from value_calculator import ValuePropositionCalculator
 import os
 import datetime
 
 if __name__ == "__main__":
     transition_file = "SellerTransition.csv"
     states_file = "SellerStates.csv"
-    
+    value_elements_file = "value_elements.csv"
+    category_weights_file = "category_weights.csv"
+
     if os.path.exists("SellerTransition.xlsx"):
         transition_file = "SellerTransition.xlsx"
     elif os.path.exists("SellerTransition.xls"):
@@ -21,33 +24,45 @@ if __name__ == "__main__":
 
     transition_data = read_excel(transition_file)
     states = read_excel(states_file)
+    value_elements, category_weights = read_value_elements(value_elements_file, category_weights_file)
 
-last_id = states['State'].iloc[-1]
+    last_id = states['State'].iloc[-1]
 
-agent = Agent(transition_data, states)
-model = Model(agent)
+    agent = Agent(transition_data, states, value_elements, category_weights)
+    model = Model(agent)
 
-step_count = 0
-state_history = []
-next_state = []
-next_step = []
+    # Initialize the value calculator
+    value_calculator = ValuePropositionCalculator(value_elements_file, category_weights_file)
 
-while agent.state != last_id:
-    state_history.append(agent.state)
-    model.step()
-    next_state.append(agent.state)
-    step_count += 1
-    next_step.append(step_count+1)
+    step_count = 0
+    state_history = []
+    next_state = []
+    next_step = []
 
-results_df = pd.DataFrame({
-    "Current State": state_history,
-    "Current Step Number": range(1, len(state_history) + 1),
-    "Next State": next_state,
-    "Next Step Number": next_step
-})
+    while agent.state != last_id:
+        state_history.append(agent.state)
+        model.step()
 
-timestamp_str = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-filename = f"simulation_results_{timestamp_str}.csv"
-results_df.to_csv(filename, index=False)
+        # Dynamically update weights for touched elements
+        for element in value_calculator.elements.keys():
+            value_calculator.update_element_weight(element)
 
-print(f"Simulation results saved to simulation_results.csv. Total steps: {step_count}")
+        # Save updated elements to the CSV file after each step
+        value_calculator.save_elements_to_file()
+
+        next_state.append(agent.state)
+        step_count += 1
+        next_step.append(step_count + 1)
+
+    results_df = pd.DataFrame({
+        "Current State": state_history,
+        "Current Step Number": range(1, len(state_history) + 1),
+        "Next State": next_state,
+        "Next Step Number": next_step
+    })
+
+    timestamp_str = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    filename = f"simulation_results_{timestamp_str}.csv"
+    results_df.to_csv(filename, index=False)
+
+    print(f"Simulation results saved to {filename}. Total steps: {step_count}")
