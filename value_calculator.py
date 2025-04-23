@@ -53,15 +53,15 @@ class ValuePropositionCalculator:
             logging.debug(f"Updated weight for {element_name}: {element['weight']}")
 
     def save_elements_to_file(self):
-        """Save the updated elements back to the CSV file."""
+        """Save the elements back to the CSV file without updating weights."""
         with open(self.elements_file, 'w', newline='') as file:
             writer = csv.writer(file, delimiter=';')
             writer.writerow(['element_name', 'weight', 'category', 'touch_count'])
             for element_name, details in self.elements.items():
                 writer.writerow([
                     element_name,
-                    details['weight'],
+                    details['original_weight'],  # Use the original weight instead of the updated weight
                     details['category'],
                     details['touch_count']
                 ])
-        logging.debug(f"Saved updated elements to {self.elements_file}")
+        logging.debug(f"Saved elements to {self.elements_file} without updating weights.")
