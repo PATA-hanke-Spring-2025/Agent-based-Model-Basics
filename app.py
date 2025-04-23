@@ -28,41 +28,55 @@ if __name__ == "__main__":
 
     last_id = states['State'].iloc[-1]
 
-    agent = Agent(transition_data, states, value_elements, category_weights)
-    model = Model(agent)
+    # Number of simulation runs
+    num_runs = 1000
 
     # Initialize the value calculator
     value_calculator = ValuePropositionCalculator(value_elements_file, category_weights_file)
 
-    step_count = 0
-    state_history = []
-    next_state = []
-    next_step = []
+    # Aggregate results
+    aggregated_results = []
 
-    while agent.state != last_id:
-        state_history.append(agent.state)
-        model.step()
+    for run in range(num_runs):
+        agent = Agent(transition_data, states, value_elements, category_weights)
+        model = Model(agent)
 
-        # Dynamically update weights for touched elements
-        for element in value_calculator.elements.keys():
-            value_calculator.update_element_weight(element)
+        step_count = 0
+        state_history = []
+        next_state = []
+        next_step = []
 
-        # Save updated elements to the CSV file after each step
-        value_calculator.save_elements_to_file()
+        while agent.state != last_id:
+            state_history.append(agent.state)
+            model.step()
 
-        next_state.append(agent.state)
-        step_count += 1
-        next_step.append(step_count + 1)
+            # Dynamically update weights for touched elements
+            for element in value_calculator.elements.keys():
+                value_calculator.update_element_weight(element)
 
-    results_df = pd.DataFrame({
-        "Current State": state_history,
-        "Current Step Number": range(1, len(state_history) + 1),
-        "Next State": next_state,
-        "Next Step Number": next_step
-    })
+            # Save updated elements to the CSV file after each step
+            value_calculator.save_elements_to_file()
 
+            next_state.append(agent.state)
+            step_count += 1
+            next_step.append(step_count + 1)
+
+        # Store results for this run
+        results_df = pd.DataFrame({
+            "Run": [run + 1] * len(state_history),
+            "Current State": state_history,
+            "Current Step Number": range(1, len(state_history) + 1),
+            "Next State": next_state,
+            "Next Step Number": next_step
+        })
+        aggregated_results.append(results_df)
+
+    # Combine all results into a single DataFrame
+    all_results_df = pd.concat(aggregated_results, ignore_index=True)
+
+    # Save aggregated results to a CSV file
     timestamp_str = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    filename = f"simulation_results_{timestamp_str}.csv"
-    results_df.to_csv(filename, index=False)
+    filename = f"aggregated_simulation_results_{timestamp_str}.csv"
+    all_results_df.to_csv(filename, index=False)
 
-    print(f"Simulation results saved to {filename}. Total steps: {step_count}")
+    print(f"Aggregated simulation results saved to {filename}. Total runs: {num_runs}")

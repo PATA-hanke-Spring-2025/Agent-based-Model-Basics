@@ -29,9 +29,31 @@ def plot_value_effects(results_df, value_elements):
             plt.legend()
             plt.show()
 
+def plot_state_distribution(results_df):
+    """Plot the distribution of states across all runs."""
+    state_counts = results_df["Current State"].value_counts(normalize=True) * 100
+    plt.figure(figsize=(10, 6))
+    state_counts.sort_index().plot(kind="bar", color="skyblue")
+    plt.xlabel("State")
+    plt.ylabel("Percentage of Occurrences")
+    plt.title("State Distribution Across All Runs")
+    plt.grid(axis="y")
+    plt.show()
+
+def plot_average_steps_per_state(results_df):
+    """Plot the average number of steps spent in each state."""
+    avg_steps = results_df.groupby("Current State")["Current Step Number"].mean()
+    plt.figure(figsize=(10, 6))
+    avg_steps.sort_index().plot(kind="bar", color="orange")
+    plt.xlabel("State")
+    plt.ylabel("Average Steps")
+    plt.title("Average Steps Per State Across All Runs")
+    plt.grid(axis="y")
+    plt.show()
+
 def main():
     # Path to the simulation results file
-    simulation_results_file = "simulation_results.csv"  # Replace with the actual file path
+    simulation_results_file = "aggregated_simulation_results.csv"  # Replace with the actual file path
     results_df = load_simulation_results(simulation_results_file)
 
     # List of value elements to visualize (replace with actual column names if available)
@@ -42,6 +64,12 @@ def main():
 
     # Plot value effects
     plot_value_effects(results_df, value_elements)
+
+    # Plot state distribution
+    plot_state_distribution(results_df)
+
+    # Plot average steps per state
+    plot_average_steps_per_state(results_df)
 
 if __name__ == "__main__":
     main()
