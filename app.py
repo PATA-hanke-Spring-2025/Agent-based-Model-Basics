@@ -5,6 +5,10 @@ from reading import read_excel, read_value_elements
 from value_calculator import ValuePropositionCalculator
 import os
 import datetime
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 if __name__ == "__main__":
     transition_file = "SellerTransition.csv"
@@ -29,10 +33,18 @@ if __name__ == "__main__":
     last_id = states['State'].iloc[-1]
 
     # Number of simulation runs
-    num_runs = 1000
+    num_runs = 100
 
     # Initialize the value calculator
     value_calculator = ValuePropositionCalculator(value_elements_file, category_weights_file)
+
+    # Randomize and normalize weights before starting simulations
+    value_calculator.randomize_weights()
+
+    # Log the randomized weights
+    logging.info("Randomized and normalized weights before starting simulations:")
+    for element_name, details in value_calculator.elements.items():
+        logging.info(f"Element: {element_name}, Weight: {details['weight']:.4f}")
 
     # Aggregate results
     aggregated_results = []
@@ -49,10 +61,6 @@ if __name__ == "__main__":
         while agent.state != last_id:
             state_history.append(agent.state)
             model.step()
-
-            # Dynamically update weights for touched elements
-            for element in value_calculator.elements.keys():
-                value_calculator.update_element_weight(element)
 
             # Save updated elements to the CSV file after each step
             value_calculator.save_elements_to_file()
@@ -78,5 +86,10 @@ if __name__ == "__main__":
     timestamp_str = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     filename = f"aggregated_simulation_results_{timestamp_str}.csv"
     all_results_df.to_csv(filename, index=False)
+
+    """# Log the randomized weights at the end of the simulation
+    logging.info("Final randomized weights after all simulations:")
+    for element_name, details in value_calculator.elements.items():
+        logging.info(f"Element: {element_name}, Weight: {details['weight']:.4f}")"""
 
     print(f"Aggregated simulation results saved to {filename}. Total runs: {num_runs}")

@@ -34,6 +34,5 @@ class Agent:
 
     def step(self):
         probabilities = self.transition_matrix.loc[self.state].values
-        self.update_values()  # Update values at each step
         self.state = random.choices(self.states['State'].tolist(), weights=probabilities)[0]
         return self.state

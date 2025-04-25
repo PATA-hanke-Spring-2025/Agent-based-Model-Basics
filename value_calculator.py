@@ -52,6 +52,29 @@ class ValuePropositionCalculator:
             element['weight'] += 0.1 * (original_weight - element['weight'])
             logging.debug(f"Updated weight for {element_name}: {element['weight']}")
 
+    def randomize_weights(self):
+        """Randomize weights for all value elements."""
+        for element_name, details in self.elements.items():
+            original_weight = details['original_weight']
+            # Randomly adjust the weight slightly (for example ±5% of the original weight)
+            adjustment = random.uniform(-0.05, 0.05) * original_weight
+            new_weight = original_weight + adjustment
+            # Weight must stay within 0 and 1
+            details['weight'] = max(0, min(1.0, new_weight))
+        self.normalize_weights()
+
+    def normalize_weights(self):
+        """Normalize weights so that they sum to 1 within each category."""
+        category_totals = {}
+        for element_name, details in self.elements.items():
+            category = details['category']
+            category_totals[category] = category_totals.get(category, 0) + details['weight']
+
+        for element_name, details in self.elements.items():
+            category = details['category']
+            if category_totals[category] > 0:
+                details['weight'] /= category_totals[category]
+
     def save_elements_to_file(self):
         """Save the elements back to the CSV file without updating weights."""
         with open(self.elements_file, 'w', newline='') as file:
@@ -64,4 +87,4 @@ class ValuePropositionCalculator:
                     details['category'],
                     details['touch_count']
                 ])
-        logging.debug(f"Saved elements to {self.elements_file} without updating weights.")
+        #logging.debug(f"Saved elements to {self.elements_file} without updating weights.")
