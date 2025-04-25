@@ -24,10 +24,10 @@ class Agent:
         """Update values by slightly modifying the weights."""
         for element, details in self.value_elements.items():
             original_weight = details['weight']
-            # Randomly adjust the weight slightly (e.g., ±10%)
-            adjustment = random.uniform(-0.1, 0.1) * original_weight
+            # Randomly adjust the weight slightly (for example ±5%), uncertainty factor
+            adjustment = random.uniform(-0.05, 0.05) * original_weight
             new_weight = details['weight'] + adjustment
-            # Ensure the weight stays close to the original and within [0, 1]
+            # Ensure the weight stays close to the original and within 0 and 1
             details['weight'] = max(0, min(1.0, new_weight))
             # Apply a "pull" toward the original weight to stabilize
             details['weight'] += 0.1 * (original_weight - details['weight'])

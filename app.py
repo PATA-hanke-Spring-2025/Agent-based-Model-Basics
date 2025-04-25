@@ -39,12 +39,12 @@ if __name__ == "__main__":
     value_calculator = ValuePropositionCalculator(value_elements_file, category_weights_file)
 
     # Randomize and normalize weights before starting simulations
-    value_calculator.randomize_weights()
+    # value_calculator.randomize_weights() NOT USED IT CURRENT VERSION
 
     # Log the randomized weights
-    logging.info("Randomized and normalized weights before starting simulations:")
+    """logging.info("Randomized and normalized weights before starting simulations:")
     for element_name, details in value_calculator.elements.items():
-        logging.info(f"Element: {element_name}, Weight: {details['weight']:.4f}")
+        logging.info(f"Element: {element_name}, Weight: {details['weight']:.4f}")"""
 
     # Aggregate results
     aggregated_results = []
