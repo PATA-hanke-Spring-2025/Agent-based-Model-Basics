@@ -25,11 +25,8 @@ def create_state_matrix(transition_data, states):
 
 
 ##For reading value_elements + category_weights
-def read_value_elements(elements_file, weights_file):
-    """Read value elements and category weights from CSV files."""
-    elements_df = pd.read_csv(elements_file, delimiter=";")
-    weights_df = pd.read_csv(weights_file, delimiter=";")
-
+def read_value_elements(elements_df):
+   
     elements = {}
     for _, row in elements_df.iterrows():
         element_name = row['element_name']
@@ -43,11 +40,15 @@ def read_value_elements(elements_file, weights_file):
             'touch_count': touch_count
         }
 
+    return elements
+
+def read_value_weights( weights_df):
+   
     category_weights = {}
     for _, row in weights_df.iterrows():
         category_weights[row['category']] = float(row['weight'])
 
-    return elements, category_weights
+    return category_weights
 
 
 # ##For reading the plugins + creating the plugin matrix

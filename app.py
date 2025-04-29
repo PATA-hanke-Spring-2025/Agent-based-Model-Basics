@@ -1,7 +1,7 @@
 import pandas as pd
 from agents import Agent
 from model import Model
-from reading import read_excel, read_value_elements
+from reading import read_excel, read_value_elements, read_value_weights
 from value_calculator import ValuePropositionCalculator
 import os
 import datetime
@@ -28,15 +28,16 @@ if __name__ == "__main__":
 
     transition_data = read_excel(transition_file)
     states = read_excel(states_file)
-    value_elements, category_weights = read_value_elements(value_elements_file, category_weights_file)
+
+    value_elements_df = read_excel(value_elements_file)
+    category_weights_df = read_excel(category_weights_file)
+
+   
 
     last_id = states['State'].iloc[-1]
 
     # Number of simulation runs
     num_runs = 100
-
-    # Initialize the value calculator
-    value_calculator = ValuePropositionCalculator(value_elements_file, category_weights_file)
 
     # Randomize and normalize weights before starting simulations
     # value_calculator.randomize_weights() NOT USED IT CURRENT VERSION
@@ -50,7 +51,7 @@ if __name__ == "__main__":
     aggregated_results = []
 
     for run in range(num_runs):
-        agent = Agent(transition_data, states, value_elements, category_weights)
+        agent = Agent(transition_data, states, value_elements_df, category_weights_df)
         model = Model(agent)
 
         step_count = 0
@@ -61,9 +62,6 @@ if __name__ == "__main__":
         while agent.state != last_id:
             state_history.append(agent.state)
             model.step()
-
-            # Save updated elements to the CSV file after each step
-            value_calculator.save_elements_to_file()
 
             next_state.append(agent.state)
             step_count += 1
