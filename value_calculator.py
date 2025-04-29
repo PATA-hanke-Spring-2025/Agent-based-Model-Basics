@@ -19,9 +19,14 @@ class ValuePropositionCalculator:
                 reader = csv.DictReader(file, delimiter=';')
                 for row in reader:
                     element_name = row['element_name']
+                    weight = float(row['weight'])
+                    # Clamp weight between 0 and 1
+                    if weight < 0 or weight > 1:
+                        logging.warning(f"Weight for {element_name} is out of bounds ({weight}). Clamping to valid range.")
+                        weight = max(0, min(1.0, weight))
                     self.elements[element_name] = {
-                        'weight': float(row['weight']),
-                        'original_weight': float(row['weight']),  # Store the original weight
+                        'weight': weight,
+                        'original_weight': weight,  # Store the original weight
                         'category': row['category'],
                         'touch_count': int(row['touch_count'])
                     }
@@ -36,6 +41,9 @@ class ValuePropositionCalculator:
                     self.category_weights[row['category']] = float(row['weight'])
         except FileNotFoundError:
             raise FileNotFoundError(f"Category weights file {category_weights_file} not found. Please ensure it exists.")
+
+        # Normalize weights after loading
+        self.normalize_weights()
 
     def update_element_weight(self, element_name):
         """Update the weight of a value element based on its touch count."""
@@ -74,6 +82,8 @@ class ValuePropositionCalculator:
             category = details['category']
             if category_totals[category] > 0:
                 details['weight'] /= category_totals[category]
+            else:
+                logging.warning(f"Category {category} has a total weight of 0. Skipping normalization.")
 
     def save_elements_to_file(self):
         """Save the elements back to the CSV file without updating weights."""
@@ -83,8 +93,54 @@ class ValuePropositionCalculator:
             for element_name, details in self.elements.items():
                 writer.writerow([
                     element_name,
-                    details['original_weight'],  # Use the original weight instead of the updated weight
+                    details['weight'],  # Save the updated weight
                     details['category'],
                     details['touch_count']
                 ])
-        #logging.debug(f"Saved elements to {self.elements_file} without updating weights.")
+        #logging.debug(f"Saved elements to {self.elements_file}.")
+
+    def evaluate_offering(self, offering_scores, buyer_preferences=None):
+        """Evaluate a B2B offering based on its element scores and buyer preferences."""
+        # Check table stakes
+        for element, details in self.elements.items():
+            if details['category'] == 'table_stakes':
+                if element in offering_scores and offering_scores[element] < 6:
+                    return 0.0, {"table_stakes_failed": element}
+        
+        # Calculate scores by category
+        category_scores = {cat: 0 for cat in self.category_weights.keys()}
+        category_counts = {cat: 0 for cat in self.category_weights.keys()}
+        
+        for element, score in offering_scores.items():
+            if element in self.elements:
+                category = self.elements[element]['category']
+                
+                # Apply the base weight
+                weight = self.elements[element]['weight']
+                
+                # Apply buyer preferences if available
+                if buyer_preferences and element in buyer_preferences:
+                    weight *= buyer_preferences[element]
+                
+                # Calculate weighted score based on excellence
+                if score >= 8:  # Excellent
+                    weighted_score = weight * score / 10
+                elif score >= 6:  # Good
+                    weighted_score = 0.5 * weight * score / 10
+                else:  # Poor
+                    weighted_score = 0.1 * weight * score / 10
+                
+                category_scores[category] += weighted_score
+                category_counts[category] += 1
+        
+        # Normalize category scores
+        for cat in category_scores:
+            if category_counts[cat] > 0:
+                category_scores[cat] /= category_counts[cat]
+        
+        # Calculate overall score
+        overall_score = 0
+        for cat, score in category_scores.items():
+            overall_score += score * self.category_weights[cat]
+        
+        return overall_score, category_scores
