@@ -7,7 +7,7 @@ def read_excel(filename):
     if filename.endswith('.csv'):
         return pd.read_csv(filename, delimiter=";")
     elif filename.endswith(('.xls')):
-        return pd.read_excel(filename, engine= "xlrd")
+        return pd.read_excel(filename, engine="xlrd")
     elif filename.endswith(('.xlsx')):
         return pd.read_excel(filename, engine='openpyxl')
 
@@ -24,8 +24,35 @@ def create_state_matrix(transition_data, states):
     return pd.DataFrame(matrix, index=states['State'], columns=states['State'])
 
 
-##For reading the plugins + creating the plugin matrix
-def read_plugins(agent):
+##For reading value_elements + category_weights
+def read_value_elements(elements_df):
+   
+    elements = {}
+    for _, row in elements_df.iterrows():
+        element_name = row['element_name']
+        weight = float(row['weight'])
+        category = row['category']
+        touch_count = int(row['touch_count'])
+        # Store the weight, category, and touch count for each element
+        elements[element_name] = {
+            'weight': weight,
+            'category': category,
+            'touch_count': touch_count
+        }
+
+    return elements
+
+def read_value_weights( weights_df):
+   
+    category_weights = {}
+    for _, row in weights_df.iterrows():
+        category_weights[row['category']] = float(row['weight'])
+
+    return category_weights
+
+
+# ##For reading the plugins + creating the plugin matrix
+"""def read_plugins(agent):
     plugin_status = False
     plugin_file = "Plugins.xlsx"
     plugins = None
@@ -39,11 +66,22 @@ def read_plugins(agent):
                 plugin_name=row['Name']
                 plugin_import=row['Import']
                 plugin_function=row['Main Function']
-                plugin_data[plugin_name]={'function': plugin_function, 'import': plugin_import}
+                
                 module = importlib.import_module(plugin_import)
+                # Load plugin-specific data if load() exists
+                plugin_loaded_data = {}
+                if hasattr(module, 'load'):
+                    plugin_loaded_data = module.load()
+
+                plugin_data[plugin_name]={
+                    'function': plugin_function,
+                    'import': plugin_import,
+                    'data_for_loading': plugin_loaded_data}
+               
                 loaded_plugins[plugin_name]=(module,plugin_function)
+               
             if plugin_status==True:
                 print("Plugins loaded")
             else:
                 print("No plugins loaded")
-    return plugins, plugin_data, loaded_plugins
+    return plugins, plugin_data, loaded_plugins"""
