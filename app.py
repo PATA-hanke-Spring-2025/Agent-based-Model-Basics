@@ -1,8 +1,8 @@
 import pandas as pd
 from agents import Agent
 from model import Model
-from reading import read_excel, read_value_elements, read_value_weights
-from value_calculator import ValuePropositionCalculator
+from reading import read_excel
+
 import os
 import datetime
 import logging
@@ -16,37 +16,31 @@ if __name__ == "__main__":
     value_elements_file = "value_elements.csv"
     category_weights_file = "category_weights.csv"
 
+
     if os.path.exists("SellerTransition.xlsx"):
         transition_file = "SellerTransition.xlsx"
     elif os.path.exists("SellerTransition.xls"):
         transition_file = "SellerTransition.xls"
 
-    if os.path.exists("SellerStates.xlsx"):
-        states_file = "SellerStates.xlsx"
-    elif os.path.exists("SellerStates.xls"):
-        states_file = "SellerStates.xls"
+    if os.path.exists("Seller_States.xlsx"):
+        states_file = "Seller_States.xlsx"
+    elif os.path.exists("Seller_States.xls"):
+        states_file = "Seller_States.xls"
 
     transition_data = read_excel(transition_file)
     states = read_excel(states_file)
-
+    
     value_elements_df = read_excel(value_elements_file)
     category_weights_df = read_excel(category_weights_file)
 
-   
+
 
     last_id = states['State'].iloc[-1]
 
     # Number of simulation runs
-    num_runs = 100
+    num_runs = 10
 
-    # Randomize and normalize weights before starting simulations
-    # value_calculator.randomize_weights() NOT USED IT CURRENT VERSION
-
-    # Log the randomized weights
-    """logging.info("Randomized and normalized weights before starting simulations:")
-    for element_name, details in value_calculator.elements.items():
-        logging.info(f"Element: {element_name}, Weight: {details['weight']:.4f}")"""
-
+   
     # Aggregate results
     aggregated_results = []
 
@@ -85,9 +79,5 @@ if __name__ == "__main__":
     filename = f"aggregated_simulation_results_{timestamp_str}.csv"
     all_results_df.to_csv(filename, index=False)
 
-    """# Log the randomized weights at the end of the simulation
-    logging.info("Final randomized weights after all simulations:")
-    for element_name, details in value_calculator.elements.items():
-        logging.info(f"Element: {element_name}, Weight: {details['weight']:.4f}")"""
 
     print(f"Aggregated simulation results saved to {filename}. Total runs: {num_runs}")

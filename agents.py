@@ -13,6 +13,8 @@ class Agent:
         self.value_calculator = ValuePropositionCalculator(value_elements_df, category_weights_df)
 
     
+      
+    
 
     def step(self):
         probabilities = self.transition_matrix.loc[self.state].values
