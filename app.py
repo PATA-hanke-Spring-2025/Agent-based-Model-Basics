@@ -39,7 +39,7 @@ if __name__ == "__main__":
     last_id = states['State'].iloc[-1]
 
     # Number of simulation runs
-    num_runs = 10
+    num_runs = 100
 
    
     # Aggregate results

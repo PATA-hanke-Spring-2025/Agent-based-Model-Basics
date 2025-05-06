@@ -1,17 +1,53 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 def load_simulation_results(file_path):
     """Load simulation results from a CSV file."""
     return pd.read_csv(file_path)
 
-def plot_state_transitions(results_df):
-    """Plot the state transitions over time."""
+def plot_closing_state_histogram(results_df):
+    """Plot a histogram with a distribution curve for the 'Closing' state."""
+    # Filter data for the 'Closing' state
+    closing_state_data = results_df[results_df["Current State"] == "Closing"]["Current Step Number"]
+
+    # Create the histogram with 10 deciles and overlay a curve
     plt.figure(figsize=(10, 6))
-    plt.plot(results_df["Current Step Number"], results_df["Current State"], marker='o', label="State Transitions")
+    sns.histplot(closing_state_data, bins=10, kde=True, color="blue", stat="percent", edgecolor="black")
+    
+    plt.xlabel("Number of Steps to Reach 'Closing'")
+    plt.ylabel("Frequency")
+    plt.title("Histogram with Distribution Curve for 'Closing' State")
+    plt.grid(axis="y")
+    plt.show()
+
+def plot_state_transitions(results_df):
+    """Plot the state transitions over time, showing individual runs and the average."""
+    plt.figure(figsize=(12, 8))
+
+    # Plot individual runs
+    for run_id, run_data in results_df.groupby("Run"):
+        plt.plot(run_data["Current Step Number"], run_data["Current State"], alpha=0.3, label=f"Run {run_id}")
+
+    # Map non-numeric states to numeric values
+    if not pd.api.types.is_numeric_dtype(results_df["Current State"]):
+        state_mapping = {state: idx for idx, state in enumerate(results_df["Current State"].unique())}
+        results_df["Numeric State"] = results_df["Current State"].map(state_mapping)
+    else:
+        results_df["Numeric State"] = results_df["Current State"]
+
+    # Calculate the average state transitions, excluding steps with insufficient data
+    step_counts = results_df["Current Step Number"].value_counts()
+    valid_steps = step_counts[step_counts > 5].index  # exclude steps with less than 6 transitions
+    filtered_results = results_df[results_df["Current Step Number"].isin(valid_steps)]
+    avg_state_transitions = filtered_results.groupby("Current Step Number")["Numeric State"].mean()
+
+    # Plot the average state transitions
+    plt.plot(avg_state_transitions.index, avg_state_transitions.values, color="red", linewidth=2, label="Average State")
+
     plt.xlabel("Step Number")
-    plt.ylabel("State")
-    plt.title("State Transitions Over Time")
+    plt.ylabel("State (Numeric)")
+    plt.title("State Transitions Over Time (Individual Runs and Average)")
     plt.grid()
     plt.legend()
     plt.show()
@@ -57,6 +93,9 @@ def main(filename):
 
     # List of value elements to visualize (replace with actual column names if available)
     value_elements = ["parameter1", "parameter2", "parameter3"]  # Replace with actual value element names
+
+    # Plot histogram for 'Closing' state
+    plot_closing_state_histogram(results_df)
 
     # Plot state transitions
     plot_state_transitions(results_df)
