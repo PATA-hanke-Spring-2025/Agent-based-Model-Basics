@@ -2,6 +2,7 @@ import pandas as pd
 from agents import Agent
 from model import Model
 from reading import read_excel
+from visualize_results import main as visualize
 
 import os
 import datetime
@@ -78,6 +79,7 @@ if __name__ == "__main__":
     timestamp_str = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     filename = f"aggregated_simulation_results_{timestamp_str}.csv"
     all_results_df.to_csv(filename, index=False)
-
+    
+    visualize(filename)
 
     print(f"Aggregated simulation results saved to {filename}. Total runs: {num_runs}")

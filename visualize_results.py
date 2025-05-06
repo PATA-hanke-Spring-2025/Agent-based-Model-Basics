@@ -51,8 +51,8 @@ def plot_average_steps_per_state(results_df):
     plt.grid(axis="y")
     plt.show()
 
-def main():
-    simulation_results_file = "aggregated_simulation_results_2025-04-25_12-22-18.csv"
+def main(filename):
+    simulation_results_file = filename
     results_df = load_simulation_results(simulation_results_file)
 
     # List of value elements to visualize (replace with actual column names if available)
