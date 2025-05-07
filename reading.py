@@ -46,39 +46,3 @@ def read_value_weights( weights_df):
         category_weights[row['category']] = float(row['weight'])
 
     return category_weights
-
-
-# ##For reading the plugins + creating the plugin matrix
-"""def read_plugins(agent):
-    plugin_status = False
-    plugin_file = "Plugins.xlsx"
-    plugins = None
-    plugin_data = {}
-    loaded_plugins = {}
-    if os.path.exists(plugin_file):
-        plugins=read_excel(plugin_file)
-        if plugins is not None:
-            plugin_status=True 
-            for index, row in plugins.iterrows():   
-                plugin_name=row['Name']
-                plugin_import=row['Import']
-                plugin_function=row['Main Function']
-                
-                module = importlib.import_module(plugin_import)
-                # Load plugin-specific data if load() exists
-                plugin_loaded_data = {}
-                if hasattr(module, 'load'):
-                    plugin_loaded_data = module.load()
-
-                plugin_data[plugin_name]={
-                    'function': plugin_function,
-                    'import': plugin_import,
-                    'data_for_loading': plugin_loaded_data}
-               
-                loaded_plugins[plugin_name]=(module,plugin_function)
-               
-            if plugin_status==True:
-                print("Plugins loaded")
-            else:
-                print("No plugins loaded")
-    return plugins, plugin_data, loaded_plugins"""
