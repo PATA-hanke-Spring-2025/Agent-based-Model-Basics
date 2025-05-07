@@ -25,28 +25,34 @@ def plot_state_transitions(results_df):
     """Plot the state transitions over time, showing individual runs and the average."""
     plt.figure(figsize=(12, 8))
 
+    # Dynamically determine the state order, excluding "Maintaining"
+    state_order = [state for state in results_df["Current State"].unique() if state != "Maintaining"]
+
+    # Ensure "Current State" follows the defined order
+    results_df["Current State"] = pd.Categorical(results_df["Current State"], categories=state_order, ordered=True)
+
     # Plot individual runs
     for run_id, run_data in results_df.groupby("Run"):
-        plt.plot(run_data["Current Step Number"], run_data["Current State"], alpha=0.3, label=f"Run {run_id}")
+        plt.plot(run_data["Current Step Number"], run_data["Current State"].cat.codes, alpha=0.3, label=f"Run {run_id}")
 
     # Map non-numeric states to numeric values
-    if not pd.api.types.is_numeric_dtype(results_df["Current State"]):
-        state_mapping = {state: idx for idx, state in enumerate(results_df["Current State"].unique())}
-        results_df["Numeric State"] = results_df["Current State"].map(state_mapping)
-    else:
-        results_df["Numeric State"] = results_df["Current State"]
+    state_mapping = {state: idx for idx, state in enumerate(state_order)}
+    results_df["Numeric State"] = results_df["Current State"].map(state_mapping).astype(float)
 
     # Calculate the average state transitions, excluding steps with insufficient data
     step_counts = results_df["Current Step Number"].value_counts()
-    valid_steps = step_counts[step_counts > 5].index  # exclude steps with less than 6 transitions
+    valid_steps = step_counts[step_counts > 5].index  # Exclude steps with <= 5 transitions
     filtered_results = results_df[results_df["Current Step Number"].isin(valid_steps)]
     avg_state_transitions = filtered_results.groupby("Current Step Number")["Numeric State"].mean()
 
     # Plot the average state transitions
     plt.plot(avg_state_transitions.index, avg_state_transitions.values, color="red", linewidth=2, label="Average State")
 
+    # Update y-axis ticks to show state names
+    plt.yticks(range(len(state_order)), state_order)
+
     plt.xlabel("Step Number")
-    plt.ylabel("State (Numeric)")
+    plt.ylabel("State")
     plt.title("State Transitions Over Time (Individual Runs and Average)")
     plt.grid()
     plt.legend()

@@ -26,18 +26,15 @@ def create_state_matrix(transition_data, states):
 
 ##For reading value_elements + category_weights
 def read_value_elements(elements_df):
-   
     elements = {}
     for _, row in elements_df.iterrows():
         element_name = row['element_name']
         weight = float(row['weight'])
         category = row['category']
-        touch_count = int(row['touch_count'])
-        # Store the weight, category, and touch count for each element
+        # Store the weight and category for each element
         elements[element_name] = {
             'weight': weight,
-            'category': category,
-            'touch_count': touch_count
+            'category': category
         }
 
     return elements
