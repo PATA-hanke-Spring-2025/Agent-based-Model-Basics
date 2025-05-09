@@ -11,32 +11,33 @@ This project goal is to simulate B2B buyer-seller interactions using an agent-ba
 ### Dependencies
 Before installing and running the program, ensure the following prerequisites are met:
 
-- Operating System: Windows 10 or later (or any OS with Python support).
-- Python Version: Python 3.8 or later installed on your system.
+- **Operating System**: Windows 10 or later (or any OS with Python support).
+- **Python Version**: Python 3.8 or later installed on your system.
 
 Libraries: The following Python libraries must be installed:
-- pandas: For data manipulation and analysis.
-- openpyxl: For reading and writing .xlsx Excel files.
-- xlrd: For reading .xls Excel files.
-- matplotlib: For creating visualizations.
-- seaborn: For advanced data visualization.
-- importlib: For dynamically importing modules (built into Python, no need to install).
+- `pandas`: For data manipulation and analysis.
+- `openpyxl`: For reading and writing .xlsx Excel files.
+- `xlrd`: For reading .xls Excel files.
+- `matplotlib`: For creating visualizations.
+- `seaborn`: For advanced data visualization.
+- `importlib`: For dynamically importing modules (built into Python, no need to install).
 
 Summary of Installation Commands for Libraries:
-- pip install pandas
-- pip install openpyxl
-- pip install xlrd
-- pip install matplotlib
-- pip install seaborn
-
+```bash
+pip install pandas
+pip install openpyxl
+pip install xlrd
+pip install matplotlib
+pip install seaborn
+```
 ### Installing
-
-- To download the program, you can clone the repository from Github
+To download the program, you can either:
+- Clone the repository from Github
 ```
 git clone https://github.com/PATA-hanke-Spring-2025/Agent-based-Model-Basics.git
 ```
-or you can download the Zip file and extract it.
-- Ensure that the following important files are present in the root directory:
+- Or download the Zip file and extract it.
+Ensure that the following important files are present in the root directory:
 
 #### Project Files
 | File                                  | Description                                            |
@@ -58,7 +59,7 @@ or you can download the Zip file and extract it.
 - Do not rename required input files unless you also update corresponding paths in the source code.
 - Ensure that all CSV/XLSX input files are placed in the same directroy as the code unless configured otherwise.
 
-### Executing program
+### Executing Program
 
 - To run the simulation:
 ```
