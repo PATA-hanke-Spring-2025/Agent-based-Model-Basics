@@ -76,17 +76,42 @@ This timestamp format ensures that each result file is unique and reflects the e
 
 ## Help
 
-Any advise for common problems or issues.
+If you encounter issues while running the simulation, here are some common troubleshooting tips:
+### Common Issues
+**Missing Module Errors**
+- Make sure all required libraries are installed. You can re-run:
 ```
-command to run if program contains helper info
+pip install pandas openpyxl xlrd matplotlib seaborn
 ```
+**FileNotFoundError**
+- Ensure that all required input files (e.g., `SellerStates.csv`, `SellerTransition.csv`) are in the same directory as the Python scripts.
+**Excel file read errors**
+- Confirm that `.xlsx` files are not open in another application (e.g., Excel).
+- Make sure file extensions are correct (`.csv`, `.xlsx`, etc.).
+**Simulation shows no input or empty CSV**
+- Check that the state and transition files are properly formatted and not empty.
+
+###Debug Tips
+- You can add or enable `print()` statements in `app.py` to inspect what's happening step-by-step.
+- To verify your input files, open them in Excel or a text editor and confirm headers and data consistency.
 
 ## Authors
 
-Contributors names and contact info
+This project was developed by students from Haaga-Helia University of Applied Sciences in Spring 2025
+- **Panelo Jonas**  
+  GitHub: [`@JJonnass`](https://github.com/JJonnass)
+  
+- **Lyubavskaya Tatiana**   
+  GitHub: [`@lTanjal`](https://github.com/lTanjal)
 
-ex. Dominique Pizzie  
-ex. [@DomPizzie](https://twitter.com/dompizzie)
+- **Arasola Sakari**  
+  GitHub: [`@sakariarasola`](https://github.com/sakariarasola)
+
+- **Klimovas Nojus**  
+  GitHub: [`@Veyefill`](https://github.com/Veyefill)
+
+- **Bui Quang**  
+  GitHub: [`@JohnnyBui1004`](https://github.com/JohnnyBui1004)
 
 ## Version History
 
