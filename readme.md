@@ -38,6 +38,8 @@ cd Agent-based-Model-Basics
 ```
 or you can download the Zip file and extract it.
 - Ensure that the following important files are present in the root directory:
+
+#### Project Files
 | File                                  | Description                                            |
 | ------------------------------------- | ------------------------------------------------------ |
 | `app.py`                              | Main script to load and the simulation.                |
