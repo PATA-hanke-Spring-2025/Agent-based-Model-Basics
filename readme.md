@@ -34,7 +34,6 @@ Summary of Installation Commands for Libraries:
 - To download the program, you can clone the repository from Github
 ```
 git clone https://github.com/PATA-hanke-Spring-2025/Agent-based-Model-Basics.git
-cd Agent-based-Model-Basics
 ```
 or you can download the Zip file and extract it.
 - Ensure that the following important files are present in the root directory:
