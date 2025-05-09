@@ -1,17 +1,33 @@
-# Project Title
+# Simulating B2B Buyer-Seller Interactions with Value-Based Decision Logic​
 
-Simple overview of use/purpose.
+This project goal is to simulate B2B buyer-seller interactions using an agent-based model that incorporates value-based decision logic. 
 
 ## Description
 
-An in-depth paragraph about your project and overview of use.
+ The simulation allows users to model and analyze the dynamics of decision-making processes between buyers and sellers in a business-to-business context. It leverages state transition matrices, value elements, and category weights, incorporating industry types, participant knowledge, and selected strategies to simulate realistic interactions. The system is modular and designed for flexibility, allowing exploration of diverse scenarios and datasets.
 
 ## Getting Started
 
 ### Dependencies
+Before installing and running the program, ensure the following prerequisites are met:
 
-* Describe any prerequisites, libraries, OS version, etc., needed before installing program.
-* ex. Windows 10
+- Operating System: Windows 10 or later (or any OS with Python support).
+- Python Version: Python 3.8 or later installed on your system.
+
+Libraries: The following Python libraries must be installed:
+- pandas: For data manipulation and analysis.
+- openpyxl: For reading and writing .xlsx Excel files.
+- xlrd: For reading .xls Excel files.
+- matplotlib: For creating visualizations.
+- seaborn: For advanced data visualization.
+- importlib: For dynamically importing modules (built into Python, no need to install).
+
+Summary of Installation Commands for Libraries:
+- pip install pandas
+- pip install openpyxl
+- pip install xlrd
+- pip install matplotlib
+- pip install seaborn
 
 ### Installing
 
