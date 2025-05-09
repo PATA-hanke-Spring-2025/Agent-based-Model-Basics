@@ -114,10 +114,6 @@ This project was developed by students from Haaga-Helia University of Applied Sc
   GitHub: [`@JohnnyBui1004`](https://github.com/JohnnyBui1004)
 
 
-## License
-
-This project is licensed under the [NAME HERE] License - see the LICENSE.md file for details
-
 ## Acknowledgments
 
 We would like to thank the following for their support and inspiration during this project:
