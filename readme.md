@@ -113,13 +113,6 @@ This project was developed by students from Haaga-Helia University of Applied Sc
 - **Bui Quang**  
   GitHub: [`@JohnnyBui1004`](https://github.com/JohnnyBui1004)
 
-## Version History
-
-* 0.2
-    * Various bug fixes and optimizations
-    * See [commit change]() or See [release history]()
-* 0.1
-    * Initial Release
 
 ## License
 
@@ -127,12 +120,9 @@ This project is licensed under the [NAME HERE] License - see the LICENSE.md file
 
 ## Acknowledgments
 
-Inspiration, code snippets, etc.
-* [awesome-readme](https://github.com/matiassingers/awesome-readme)
-* [PurpleBooth](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2)
-* [dbader](https://github.com/dbader/readme-template)
-* [zenorocha](https://gist.github.com/zenorocha/4526327)
-* [fvcproductions](https://gist.github.com/fvcproductions/1bfc2d4aecb01a834b46)
+We would like to thank the following for their support and inspiration during this project:
+- **Haaga-Helia University of Applied Sciences** - for providing the opportunity and guidance.
+- Our advisor **Jukka Remes** for mentoring us through the development process.
 
 To Run:
 
