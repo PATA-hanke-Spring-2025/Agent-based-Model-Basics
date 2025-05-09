@@ -31,16 +31,46 @@ Summary of Installation Commands for Libraries:
 
 ### Installing
 
-* How/where to download your program
-* Any modifications needed to be made to files/folders
+- To download the program, you can clone the repository from Github
+```
+git clone https://github.com/PATA-hanke-Spring-2025/Agent-based-Model-Basics.git
+cd Agent-based-Model-Basics
+```
+or you can download the Zip file and extract it.
+- Ensure that the following important files are present in the root directory:
+| File                                  | Description                                            |
+| ------------------------------------- | ------------------------------------------------------ |
+| `app.py`                              | Main script to load and the simulation.                |
+| `agents.py`                           | Defines th agents and its behavior.                    |
+| `model.py`                            | Manages and runs the simulation loop for agents.       |
+| `reading.py`                          | Reads input files e.g.g transition data                |
+| `value_calculator.py`                 | Calculates value scores based on elements and weights. |
+| `visualize_results.py`                | Generates visualizations from simulation output.       |
+| `BuyerStates.csv`                     | State definitions for buyer agents.                    |
+| `SellerStates.csv`                    | State definitions for seller agents.                   |
+| `BuyerTransition.csv`                 | State transition matrix for buyers.                    |
+| `SellerTransition.csv`                | State transition matrix for sellers.                   |
+| `category_weights.csv`                | Weights for different decision-making categories.      |
+| `value_elements.csv`                  | Defines specific elements of value used in scoring.    |
+| `master-parameters.md`                | Optional notes about parameters used.                  |
+
+- Do not rename required input files unless you also update corresponding paths in the source code.
+- Ensure that all CSV/XLSX input files are placed in the same directroy as the code unless configured otherwise.
 
 ### Executing program
 
-* How to run the program
-* Step-by-step bullets
+- To run the simulation:
 ```
-code blocks for commands
+python app.py
 ```
+- After running the simulation, results will be saved in a CSV file automatically.
+- Then file is named using the format:
+```
+aggregated_simulation_results_YYYY-MM-DD_HH-MM-SS.csv
+```
+This timestamp format ensures that each result file is unique and reflects the exact time the simulation was executed.
+- The program will also generate and display visual charts based on the simulation results, helping you analyze the state transitions and overall behaviour.
+
 
 ## Help
 
